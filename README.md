@@ -2,6 +2,8 @@
 
 Approximations of trigonometric functions in $p$-norms for JavaScript; supports $p = 1, 2, 3$. Helpful for drawing squircles.
 
+[View Demo](https://squigonometry.natecation.xyz)
+
 <img src="./demo.png" >
 
 ## Usage

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Squigonometry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+          segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
+          arial, sans-serif;
+        padding: 2rem;
+      }
+      #canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Squigonometry</h1>
+    <p>
+      Note: <code>cosp</code> and <code>sinp</code> take <b>radian values</b>; degree
+      values are shown in this demo for ease of interpretation.
+    </p>
+    <div>
+      <code id="p1"></code><br />
+      <code id="p2"></code><br />
+      <code id="p3"></code>
+    </div>
+    <p>The functions <code>cosp, sinp</code> satisfy:
+      <ul>
+        <li>
+          <code>|cosp(1, x)| + |sinp(1, x)| = 1</code> for all x
+        </li>
+        <li>
+          <code>|cosp(2, x)|<sup>2</sup> + |sinp(2, x)|<sup>2</sup> = 1</code> for all x
+        </li>
+        <li>
+          <code>|cosp(3, x)|<sup>3</sup> + |sinp(3, x)|<sup>3</sup> = 1</code> for all x
+        </li>
+      </ul>
+    </p>
+    <p>
+      <a href="https://github.com/nathanhleung/squigonometry">View on GitHub</a>
+    </p>
+    <canvas id="canvas"></canvas>
+    <script type="module">
+      import { sinp, cosp } from "./dist/index.mjs";
+
+      const canvas = document.getElementById("canvas");
+      const p1 = document.getElementById("p1");
+      const p2 = document.getElementById("p2");
+      const p3 = document.getElementById("p3");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      let degrees = 0;
+
+      function render() {
+        const ctx = canvas.getContext("2d");
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const minorAxis = Math.min(width, height);
+
+        const cosp1Value = cosp(1, (degrees / 180) * Math.PI);
+        const sinp1Value = sinp(1, (degrees / 180) * Math.PI);
+        const x1 = cosp1Value * (minorAxis / 4) + width / 2;
+        // Multiply by -1 to flip the y-axis (<canvas> coordinates are measured top-down)
+        const y1 = -sinp1Value * (minorAxis / 4) + height / 2;
+
+        ctx.fillStyle = `hsl(${degrees}, 100%, 50%)`;
+        ctx.fillRect(x1, y1, 2, 2);
+
+        const cosp2Value = cosp(2, (degrees / 180) * Math.PI);
+        const sinp2Value = sinp(2, (degrees / 180) * Math.PI);
+        const x2 = cosp2Value * (minorAxis / 4) + width / 2;
+        const y2 = -sinp2Value * (minorAxis / 4) + height / 2;
+
+        ctx.fillStyle = `hsl(${degrees}, 100%, 50%)`;
+        ctx.fillRect(x2, y2, 2, 2);
+
+        const cosp3Value = cosp(3, (degrees / 180) * Math.PI);
+        const sinp3Value = sinp(3, (degrees / 180) * Math.PI);
+        const x3 = cosp3Value * (minorAxis / 4) + width / 2;
+        const y3 = -sinp3Value * (minorAxis / 4) + height / 2;
+
+        ctx.fillStyle = `hsl(${degrees}, 100%, 50%)`;
+        ctx.fillRect(x3, y3, 2, 2);
+
+        p1.innerText = `cosp(1, ${degrees}°), sinp(1, ${degrees}°) = ${cosp1Value.toFixed(
+          2
+        )} ${sinp1Value.toFixed(2)}`;
+        p2.innerText = `cosp(2, ${degrees}°), sinp(2, ${degrees}°) = ${cosp2Value.toFixed(
+          2
+        )} ${sinp2Value.toFixed(2)}`;
+        p3.innerText = `cosp(3, ${degrees}°), sinp(3, ${degrees}°) = ${cosp3Value.toFixed(
+          2
+        )} ${sinp3Value.toFixed(2)}`;
+
+        degrees += 1;
+
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    </script>
+  </body>
+</html>
